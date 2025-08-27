@@ -34,3 +34,38 @@ Este laboratorio documenta la primera interacción con el robot **Pepper** en el
 2. Conectarse al robot:  
    ```bash
    ssh nao@ip_Pepper
+Crear un script en Python con nano movimiento.py.
+
+Ejecutar el código en el robot.
+
+🤖 Ejemplo de código en Python
+import qi, argparse, sys, almath, motion
+
+def main(session):
+    motion_service = session.service("ALMotion")
+    posture_service = session.service("ALRobotPosture")
+    posture_service.goToPosture("StandInit", 0.5)
+
+    # Movimiento sencillo de brazo
+    names  = ["LShoulderPitch"]
+    angles = [50*almath.TO_RAD]
+    motion_service.setAngles(names, angles, 0.2)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=9559)
+    args = parser.parse_args()
+
+    connection_url = "tcp://{}:{}".format(args.ip, args.port)
+    app = qi.Application(["Example", "--qi-url=" + connection_url])
+    app.start()
+    main(app.session)
+
+✅ Conclusiones
+
+Se comprendió la utilidad de las librerías básicas para la programación en Pepper.
+
+Se logró ejecutar una coreografía sencilla en Choregraphe.
+
+Se verificó la conexión mediante SSH y la ejecución de un script en Python.
